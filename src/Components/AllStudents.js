@@ -349,7 +349,7 @@ export default function AllStudents() {
       >
         <Box sx={style}>
           <div>Edit {modalData.id}</div>
-          <div>
+          <div style={{ marginTop: "10px" }}>
             <TextField
               id="outlined-basic"
               label="Name"
@@ -363,7 +363,7 @@ export default function AllStudents() {
               }}
             />
           </div>
-          <div>
+          <div style={{ marginTop: "10px" }}>
             <Button
               variant="contained"
               onClick={(e) => {
