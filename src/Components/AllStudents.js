@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import "./AllStudents.css";
-import { Avatar, Box, Grid, TextField } from "@mui/material";
+import { Avatar, Box, Grid, Modal, TextField, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
 
@@ -210,11 +210,13 @@ export default function AllStudents() {
   ]);
   const [searchStudents, setSearchStudents] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [status, setStatus] = useState(false);
   useEffect(() => {
     try {
       if (searchText === "") {
         setSearchStudents(students);
       }
+      setStatus(false);
     } catch (err) {
       console.log(err);
     }
@@ -236,6 +238,23 @@ export default function AllStudents() {
       console.log(err);
     }
   };
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [modalData, setModalData] = useState("");
 
   return (
     <>
@@ -308,18 +327,71 @@ export default function AllStudents() {
                   </div>
                   <div className="avatarAttendance">Attendance:</div>
                   <div className="avatarEdit">
-                    <EditIcon />
+                    <EditIcon
+                      id="editIcon"
+                      onClick={() => {
+                        setModalData(data);
+                        handleOpen(data);
+                      }}
+                    />
                   </div>
                 </Box>
               </Grid>
             );
           })}
-          <Grid item></Grid>
-          <Grid item></Grid>
-          <Grid item></Grid>
-          <Grid item></Grid>
         </Grid>
       </p>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div>Edit {modalData.id}</div>
+          <div>
+            <TextField
+              id="outlined-basic"
+              label="Name"
+              variant="outlined"
+              value={modalData.name}
+              onChange={(e) => {
+                setModalData({
+                  ...modalData,
+                  name: e.target.value,
+                });
+              }}
+            />
+          </div>
+          <div>
+            <Button
+              variant="contained"
+              onClick={(e) => {
+                console.log(modalData);
+                let defaultStudents = students;
+                let filteredStudents = searchStudents;
+                for (let i = 0; i < defaultStudents.length; i++) {
+                  if (defaultStudents[i].id === modalData.id) {
+                    defaultStudents[i].name = modalData.name;
+                    break;
+                  }
+                }
+                for (let i = 0; i < filteredStudents; i++) {
+                  if (filteredStudents[i].id === modalData.id) {
+                    filteredStudents[i].name = modalData.name;
+                    break;
+                  }
+                }
+                setStudents(defaultStudents);
+                setSearchStudents(filteredStudents);
+                setStatus(true);
+              }}
+            >
+              Submit
+            </Button>
+          </div>
+        </Box>
+      </Modal>
     </>
   );
 }

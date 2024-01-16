@@ -26,3 +26,6 @@
 .searchBtn {
   flex: 8;
 }
+#editIcon {
+  cursor: pointer;
+}
