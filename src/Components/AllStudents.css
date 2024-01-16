@@ -1,0 +1,28 @@
+.studentsTable {
+  border: solid 1px black;
+  padding: 10px;
+  width: 100%;
+  height: 70vh;
+  overflow: scroll;
+}
+.searchStudents {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 4px;
+  width: 100%;
+}
+.studentContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: solid 1px black;
+  margin-bottom: 3px;
+}
+.searchText {
+  flex: 2;
+}
+.searchBtn {
+  flex: 8;
+}

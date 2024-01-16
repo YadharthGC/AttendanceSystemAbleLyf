@@ -1,0 +1,68 @@
+#grpIcon,
+#presentIcon,
+#absentIcon,
+#checkedIcon,
+#notCheckedIcon,
+#onLeaveIcon {
+  /* border: solid 1px black; */
+  font-size: 70px;
+  padding: 5px;
+  border-radius: 15px;
+}
+#grpIcon {
+  color: #5194e2;
+  background-color: #dbe9f9;
+}
+
+#checkedIcon {
+  color: #55c14c;
+  background-color: #a6d993;
+}
+#notCheckedIcon {
+  color: #7c4db0;
+  background-color: #cca9e4;
+}
+#absentIcon {
+  color: #ff6867;
+  background-color: #ffe1e0;
+}
+#onLeaveIcon {
+  color: #ffb62e;
+  background-color: #fff07c;
+}
+.grpIconCount {
+  color: #5194e2;
+}
+
+.checkedIconCount {
+  color: #55c14c;
+}
+.notCheckedIconCount {
+  color: #7c4db0;
+}
+.absentIconCount {
+  color: #ff6867;
+}
+.onLeaveIconCount {
+  color: #ffb62e;
+}
+
+.iconSpace,
+.iconText,
+.iconCount {
+  text-align: center;
+}
+.iconCount {
+  font-size: 25px;
+  font-weight: bolder;
+  /* padding-bottom: 10px; */
+}
+.iconGrid {
+  /* border: solid 1px black; */
+  border-radius: 20px;
+  background-color: white;
+}
+#simpleDetailsGrid {
+  width: 100% !important;
+  column-gap: 4%;
+}

@@ -1,0 +1,44 @@
+/* #dashBoardSimpleDetails {
+  background-color: #f4f6fa;
+  padding: 40px;
+  padding-top: 3px;
+  border-radius: 15px;
+}
+#doughnutGrid {
+  background-color: #f4f6fa;
+  padding: 40px;
+  padding-top: 3px;
+  padding-left: 0px;
+  border-radius: 15px;
+}
+#barGraphGrid {
+  background-color: #f4f6fa;
+  padding: 40px;
+  padding-top: 3px;
+  border-radius: 15px;
+}
+#linearChartGrid {
+  background-color: #f4f6fa;
+  padding: 40px;
+  padding-top: 3px;
+  border-radius: 15px;
+}
+#dashBoardGridA {
+  column-gap: 5%;
+}
+#dashBoardGridB {
+  margin-top: 1%;
+  column-gap: 4%;
+}
+#ExceptionContainer {
+  background-color: #f4f6fa;
+  padding: 40px;
+  padding-top: 3px;
+  border-radius: 15px;
+}
+.cardTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1%;
+} */

@@ -1,0 +1,16 @@
+#ExceptionGrid {
+  column-gap: 16%;
+}
+.ExceptionItem {
+  background-color: white;
+  border-radius: 10px;
+  width: 40%;
+  height: 100%;
+  padding: 10px;
+}
+.exceptionContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px;
+}
