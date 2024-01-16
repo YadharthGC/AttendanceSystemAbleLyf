@@ -1,8 +1,3 @@
-// import moment from "moment/moment";
-// import React from "react";
-// import { Calendar, momentLocalizer } from "react-big-calendar";
-// import "react-big-calendar/lib/css/react-big-calendar.css";
-
 import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
