@@ -7,111 +7,13 @@ import { Box, Grid } from "@mui/material";
 import AllStudents from "./AllStudents";
 import { Avatar, TextField } from "@mui/material";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { sampleJson } from "../sampleJson";
+import { Height } from "@mui/icons-material";
 
 export default function MyCalendar() {
-  const [students, setStudents] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      attendance: [
-        { date: "2024-01-15", status: "absent" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 4,
-      name: "Alice Williams",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 5,
-      name: "Charlie Brown",
-      attendance: [
-        { date: "2024-01-15", status: "absent" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 6,
-      name: "Eva Green",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 7,
-      name: "David Wilson",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 8,
-      name: "Sophia Miller",
-      attendance: [
-        { date: "2024-01-15", status: "absent" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 9,
-      name: "Ryan Davis",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 10,
-      name: "Lily White",
-      attendance: [
-        { date: "2024-01-16", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-  ]);
+  const [students, setStudents] = useState(sampleJson);
   const [presentStudents, setPresentStudents] = useState([]);
+  const [absentStudents, setAbsentStudents] = useState([]);
 
   useEffect(() => {
     try {
@@ -123,7 +25,12 @@ export default function MyCalendar() {
 
   const handlePresentStudents = (dateStr) => {
     try {
-      let today, yr, mm, dd;
+      let today,
+        yr,
+        mm,
+        dd,
+        studentsPresent = [],
+        studentsAbsent = [];
 
       if (!dateStr) {
         today = new Date();
@@ -131,23 +38,27 @@ export default function MyCalendar() {
         mm = today.getMonth() + 1;
         dd = today.getDate();
       }
-      let totalToday = dateStr
+
+      let todayStr = dateStr
         ? dateStr
         : yr + "-" + ("0" + mm).slice(-2) + "-" + ("0" + dd).slice(-2);
-      let presentStatus = [];
+      console.log(dateStr, students);
 
       for (let i = 0; i < students.length; i++) {
         for (let j = 0; j < students[i].attendance.length; j++) {
-          if (students[i].attendance[j].date === totalToday) {
+          console.log(students[i].attendance[j].date, dateStr);
+          if (students[i].attendance[j].date === todayStr) {
             students[i].attendance[j].status === "present" &&
-              presentStatus.push(students[i]);
+              studentsPresent.push(students[i]);
+            students[i].attendance[j].status === "absent" &&
+              studentsAbsent.push(students[i]);
             break;
           }
         }
       }
 
-      console.log(presentStatus);
-      setPresentStudents(presentStatus);
+      setPresentStudents(studentsPresent);
+      setAbsentStudents(studentsAbsent);
     } catch (err) {
       console.log(err);
     }
@@ -157,19 +68,10 @@ export default function MyCalendar() {
     <>
       <div className="cardTitle">
         <div className="cardName">Attendance</div>
-        <div className="cardAccount">
-          <AccountCircleOutlinedIcon />
-        </div>
       </div>
       <Grid container spacing={2}>
         <Grid item md={6}>
-          <Box
-            sx={{
-              padding: "8px",
-              backgroundColor: "#F4F6FA",
-              borderRadius: "10px",
-            }}
-          >
+          <Box id="calendarBox" style={{ height: "85vh" }}>
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
@@ -179,7 +81,7 @@ export default function MyCalendar() {
                 end: "",
               }}
               dateClick={(e) => {
-                console.log(e, e.dateStr);
+                console.log(e.dateStr);
                 handlePresentStudents(e.dateStr);
               }}
               editable={true}
@@ -187,54 +89,52 @@ export default function MyCalendar() {
           </Box>
         </Grid>
         <Grid item md={6}>
-          <div>Students</div>
-          <Grid container md={12} spacing={2}>
-            {presentStudents.length ? (
-              presentStudents.map((data, index) => {
-                return (
-                  <Grid key={index} item md={4}>
-                    <Box
-                      sx={{
-                        padding: "3px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        backgroundColor: "#F4F6FA",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      <div className="avatarDiv">
-                        <Avatar />
-                      </div>
-                      <div className="avatarName">{data.name}</div>
-                      <div className="avatarID">
-                        ({data.id}
-                        {index})
-                      </div>
-                    </Box>
-                  </Grid>
-                );
-              })
-            ) : (
-              <Grid item md={4}>
-                <Box
-                  sx={{
-                    padding: "3px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    backgroundColor: "red",
-                    borderRadius: "10px",
-                  }}
-                >
-                  <div className="avatarDiv">
-                    <Avatar />
-                  </div>
-                  <div className="avatarName">No Students were present</div>
-                </Box>
-              </Grid>
-            )}
-          </Grid>
+          <Box id="candidatesBox" style={{ height: "80vh" }}>
+            <div>Students</div>
+            <div style={{ maxHeight: "50%", overflow: "auto" }}>
+              {presentStudents.length ? <div>Present Students</div> : ""}
+              {presentStudents.length ? (
+                <Grid container md={12} spacing={2}>
+                  {presentStudents.map((data, index) => {
+                    return (
+                      <Grid key={index} item md={4}>
+                        <Box id="studentsBox">
+                          <div className="avatarDiv">
+                            <Avatar />
+                          </div>
+                          <div className="avatarName">{data.name}</div>
+                        </Box>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              ) : (
+                ""
+              )}
+            </div>
+            <hr></hr>
+            <div style={{ maxHeight: "50%", overflow: "auto" }}>
+              {absentStudents.length ? <div>Absent Students</div> : ""}
+              {absentStudents.length ? (
+                <Grid container md={12} spacing={2}>
+                  {absentStudents.map((data, index) => {
+                    return (
+                      <Grid key={index} item md={4}>
+                        <Box id="studentsBox">
+                          <div className="avatarDiv">
+                            <Avatar />
+                          </div>
+                          <div className="avatarName">{data.name}</div>
+                        </Box>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              ) : (
+                ""
+              )}
+            </div>
+          </Box>
         </Grid>
       </Grid>
     </>

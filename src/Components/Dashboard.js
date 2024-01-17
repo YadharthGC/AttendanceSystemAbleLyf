@@ -26,7 +26,13 @@ export default function Dashboard() {
           <AccountCircleOutlinedIcon />
         </div>
       </div>
-      <Grid container spacing={2} alignItems={"stretch"}>
+      <Grid
+        container
+        spacing={2}
+        rowSpacing={4}
+        alignItems={"stretch"}
+        sx={{ marginTop: "10px" }}
+      >
         <Grid item md={3} sx={{ height: "100%", width: "100%" }}>
           <Box
             sx={{
@@ -90,74 +96,6 @@ export default function Dashboard() {
           </Box>
         </Grid>
       </Grid>
-
-      {/* <Grid
-        container
-        spacing={2}
-        alignItems={"stretch"}
-        sx={{ marginTop: "1%" }}
-      >
-        <Grid item md={4}>
-          <Box
-            sx={{
-              padding: "10px",
-              backgroundColor: "#F4F6FA",
-              borderRadius: "20px",
-            }}
-          >
-            <div>Attendance Source</div>
-            <BarGraph />
-          </Box>
-        </Grid>
-        <Grid item md={4}>
-          <Box
-            sx={{
-              padding: "10px",
-              backgroundColor: "#F4F6FA",
-              borderRadius: "20px",
-            }}
-          >
-            <div>Availability</div>
-            <LinearChart />
-          </Box>
-        </Grid>
-        <Grid item md={4}>
-          <Box
-            sx={{
-              padding: "10px",
-              backgroundColor: "#F4F6FA",
-              borderRadius: "20px",
-            }}
-          >
-            <div>Exceptions</div>
-            <Exceptions />
-          </Box>
-        </Grid>
-      </Grid> */}
-      {/* <Grid container xs={12} id="dashBoardGridA">
-        <Grid item xs={3} id="doughnutGrid">
-          <h5 style={{ marginLeft: "10%" }}>Statistics</h5>
-          <MuiDoughnut />
-        </Grid>
-        <Grid item xs={8} id="dashBoardSimpleDetails">
-          <h5>Attendance</h5>
-          <SimpleDetails />
-        </Grid>
-      </Grid>
-      <Grid container xs={12} id="dashBoardGridB">
-        <Grid item xs={4} id="barGraphGrid">
-          <h5>Attendance Source</h5>
-          <BarGraph />
-        </Grid>
-        <Grid item xs={4} id="linearChartGrid">
-          <h5>Availability</h5>
-          <LinearChart />
-        </Grid>
-        <Grid item xs={3} id="ExceptionContainer">
-          <h5>Exceptions</h5>
-          <Exceptions sx={{ width: "100%" }} />
-        </Grid>
-      </Grid> */}
     </>
   );
 }

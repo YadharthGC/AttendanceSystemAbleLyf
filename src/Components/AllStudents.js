@@ -4,210 +4,11 @@ import "./AllStudents.css";
 import { Avatar, Box, Grid, Modal, TextField, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
+import { sampleJson } from "../sampleJson";
+import AddSharpIcon from "@mui/icons-material/AddSharp";
 
 export default function AllStudents() {
-  const [students, setStudents] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      attendance: [
-        { date: "2024-01-15", status: "absent" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 4,
-      name: "Alice Williams",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 5,
-      name: "Charlie Brown",
-      attendance: [
-        { date: "2024-01-15", status: "absent" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 6,
-      name: "Eva Green",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 7,
-      name: "David Wilson",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 8,
-      name: "Sophia Miller",
-      attendance: [
-        { date: "2024-01-15", status: "absent" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 9,
-      name: "Ryan Davis",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 10,
-      name: "Lily White",
-      attendance: [
-        { date: "2024-01-16", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      attendance: [
-        { date: "2024-01-15", status: "absent" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 4,
-      name: "Alice Williams",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 5,
-      name: "Charlie Brown",
-      attendance: [
-        { date: "2024-01-15", status: "absent" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 6,
-      name: "Eva Green",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 7,
-      name: "David Wilson",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 8,
-      name: "Sophia Miller",
-      attendance: [
-        { date: "2024-01-15", status: "absent" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 9,
-      name: "Ryan Davis",
-      attendance: [
-        { date: "2024-01-15", status: "present" },
-        { date: "2024-01-14", status: "present" },
-        { date: "2024-01-13", status: "present" },
-        // Add more dates and statuses as needed
-      ],
-    },
-    {
-      id: 10,
-      name: "Lily White",
-      attendance: [
-        { date: "2024-01-16", status: "present" },
-        { date: "2024-01-14", status: "absent" },
-        { date: "2024-01-13", status: "absent" },
-        // Add more dates and statuses as needed
-      ],
-    },
-  ]);
+  const [students, setStudents] = useState(sampleJson);
   const [searchStudents, setSearchStudents] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [status, setStatus] = useState(false);
@@ -256,6 +57,13 @@ export default function AllStudents() {
   const handleClose = () => setOpen(false);
   const [modalData, setModalData] = useState("");
 
+  const handleAddStudent = () => {
+    try {
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <div className="cardTitle">
@@ -285,6 +93,15 @@ export default function AllStudents() {
           >
             Search
           </Button>
+          <Button
+            sx={{ backgroundColor: "yellow" }}
+            variant="contained"
+            onClick={(e) => {
+              // handleSearch();
+            }}
+          >
+            <AddSharpIcon />
+          </Button>
         </div>
       </p>
       <p className="studentsTable">
@@ -304,7 +121,7 @@ export default function AllStudents() {
             return (
               <Grid
                 item
-                md={6}
+                md={3}
                 // className="studentContainer"
               >
                 <Box
@@ -321,11 +138,6 @@ export default function AllStudents() {
                     <Avatar />
                   </div>
                   <div className="avatarName">{data.name}</div>
-                  <div className="avatarID">
-                    {data.id}
-                    {index}
-                  </div>
-                  <div className="avatarAttendance">Attendance:</div>
                   <div className="avatarEdit">
                     <EditIcon
                       id="editIcon"
