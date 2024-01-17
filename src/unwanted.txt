@@ -1,0 +1,79 @@
+ <div className="imgSec">
+              <div className="forWebcam">
+                <div>
+                  <Webcam
+                    id="photoWeb"
+                    width={400}
+                    audio={false}
+                    height={200}
+                    screenshotFormat="image/jpeg"
+                    ref={webcamRef}
+                  />
+                </div>
+                <div
+                  onClick={() => {
+                    handleScreenShot();
+                  }}
+                >
+                  <span className="takePic">Take Picture</span>
+                </div>
+              </div>
+              <div className="displayImages">
+                {imgEncode.length
+                  ? imgEncode.map((link) => {
+                      return link ? <img src={link} alt="nope" /> : "";
+                    })
+                  : ""}
+                {!imgEncode.length ? (
+                  <img
+                    src={imageNotDefined}
+                    className="noImg"
+                    alt="imagenotavailable"
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+
+            <div className="nameTextBox">
+              <TextField
+                id="outlined-basic"
+                label="Name"
+                variant="outlined"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <FormLabel id="demo-row-radio-buttons-group-label">
+                Gender
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+              >
+                <FormControlLabel
+                  value="female"
+                  control={<Radio />}
+                  label="Female"
+                />
+                <FormControlLabel
+                  value="male"
+                  control={<Radio />}
+                  label="Male"
+                />
+              </RadioGroup>
+            </div>
+            <div className="submitRegister">
+              <input
+                type="submit"
+                className="submitRegisterInput"
+                onClick={() => {
+                  handleSubmit();
+                }}
+              />
+            </div>

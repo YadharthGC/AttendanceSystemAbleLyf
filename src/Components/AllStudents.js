@@ -1,13 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import "./AllStudents.css";
-import { Avatar, Box, Grid, Modal, TextField } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Radio,
+  RadioGroup,
+  Select,
+  TextField,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
 import { sampleJson } from "../sampleJson";
 import AddSharpIcon from "@mui/icons-material/AddSharp";
 import Webcam from "react-webcam";
 import imageNotDefined from "../images/imgNot.jpg";
+import { styled, useTheme } from "@mui/system";
 
 export default function AllStudents() {
   const [students, setStudents] = useState(sampleJson);
@@ -16,6 +31,7 @@ export default function AllStudents() {
   const [status, setStatus] = useState(false);
   const [imgEncode, setImdEncode] = useState([]);
   const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
   const [openRegister, setOpenRegister] = useState(false);
   const [editStudent, setEditStudent] = useState(false);
   const [modalData, setModalData] = useState("");
@@ -58,6 +74,7 @@ export default function AllStudents() {
         setOpenRegister(false);
         setImdEncode([]);
         setName("");
+        setGender("");
       } else {
         setOpenRegister(true);
       }
@@ -90,6 +107,7 @@ export default function AllStudents() {
         for (let i = 0; i < defaultStudents.length; i++) {
           if (defaultStudents[i].id === modalData.id) {
             defaultStudents[i].name = name;
+            defaultStudents[i].gender = gender;
             break;
           }
         }
@@ -97,6 +115,7 @@ export default function AllStudents() {
         for (let i = 0; i < filteredStudents.length; i++) {
           if (filteredStudents[i].id === modalData.id) {
             filteredStudents[i].name = name;
+            filteredStudents[i].gender = gender;
             break;
           }
         }
@@ -138,6 +157,15 @@ export default function AllStudents() {
     }
   };
 
+  const CssTextField = styled(TextField)({
+    // "& label.Mui-focused": {
+    //   color: "#FFFFFF",
+    // },
+    "& .css-batk84-MuiInputBase-root-MuiFilledInput-root::after": {
+      borderBottom: "2px solid #FFFFFF",
+    },
+  });
+
   return (
     <>
       <div className="cardTitle">
@@ -168,7 +196,7 @@ export default function AllStudents() {
             Search
           </Button>
           <Button
-            sx={{ backgroundColor: "yellow" }}
+            color={"warning"}
             variant="contained"
             onClick={(e) => {
               handleRegisterModal();
@@ -204,6 +232,7 @@ export default function AllStudents() {
                         setModalData(data);
                         setImdEncode(data.images);
                         setName(data.name);
+                        setGender(data.gender);
                         setEditStudent(true);
                         handleRegisterModal();
                       }}
@@ -235,63 +264,111 @@ export default function AllStudents() {
               </div>
             </div>
             <hr />
-            <div className="imgSec">
-              <div className="forWebcam">
-                <div>
-                  <Webcam
-                    id="photoWeb"
-                    width={400}
-                    audio={false}
-                    height={200}
-                    screenshotFormat="image/jpeg"
-                    ref={webcamRef}
-                  />
-                </div>
-                <div
-                  onClick={() => {
-                    handleScreenShot();
-                  }}
-                >
-                  <span className="takePic">Take Picture</span>
-                </div>
-              </div>
-              <div className="displayImages">
-                {imgEncode.length
-                  ? imgEncode.map((link) => {
-                      return link ? <img src={link} alt="nope" /> : "";
-                    })
-                  : ""}
-                {!imgEncode.length ? (
-                  <img
-                    src={imageNotDefined}
-                    className="noImg"
-                    alt="imagenotavailable"
-                  />
-                ) : (
-                  ""
-                )}
-              </div>
-            </div>
-            <div className="nameTextBox">
-              <input
-                value={name}
-                type="text"
-                placeholder="full Name"
-                className="nameInput"
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
-            </div>
-            <div className="submitRegister">
-              <input
-                type="submit"
-                className="submitRegisterInput"
-                onClick={() => {
-                  handleSubmit();
-                }}
-              />
-            </div>
+            <Grid container>
+              <Grid item md={6}>
+                <Box>
+                  <div>
+                    <Webcam
+                      id="photoWeb"
+                      audio={false}
+                      screenshotFormat="image/jpeg"
+                      ref={webcamRef}
+                    />
+                  </div>
+                  <div className="submitSec">
+                    <Button
+                      variant="contained"
+                      id="takePicBtn"
+                      onClick={() => {
+                        handleScreenShot();
+                      }}
+                    >
+                      Take Picture
+                    </Button>
+                  </div>
+                </Box>
+              </Grid>
+              <Grid item md={6}>
+                <Grid container md={12}>
+                  <Grid item md={12}>
+                    <Box>
+                      <div className="displayImages">
+                        <div className="capturedImg">
+                          {imgEncode.length
+                            ? imgEncode.map((link) => {
+                                return link ? (
+                                  <img src={link} alt="nope" />
+                                ) : (
+                                  ""
+                                );
+                              })
+                            : ""}
+                          {!imgEncode.length ? (
+                            <img
+                              src={imageNotDefined}
+                              className="noImg"
+                              alt="imagenotavailable"
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </div>
+                    </Box>
+                  </Grid>
+                  <Grid item md={12}>
+                    <Box>
+                      <div className="nameAndGender">
+                        <div style={{ flex: "5", padding: "3px" }}>
+                          <CssTextField
+                            id="filled-basic"
+                            label="Full Name"
+                            variant="filled"
+                            fullWidth
+                            value={name}
+                            onChange={(e) => {
+                              setName(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div style={{ flex: "5", padding: "3px" }}>
+                          <FormControl fullWidth>
+                            <InputLabel variant="filled" id="genderSelect">
+                              Gender
+                            </InputLabel>
+                            <Select
+                              id="filled-basic"
+                              variant="filled"
+                              label="Gender"
+                              value={gender}
+                              onChange={(e) => {
+                                setGender(e.target.value);
+                              }}
+                            >
+                              <MenuItem value="Male">Male</MenuItem>
+                              <MenuItem value="Female">Female</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </div>
+                      </div>
+                      <div
+                        className="submitBtn"
+                        style={{ textAlign: "center" }}
+                      >
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            handleSubmit();
+                          }}
+                        >
+                          Submit
+                        </Button>
+                      </div>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
           </div>
         </Box>
       </Modal>
