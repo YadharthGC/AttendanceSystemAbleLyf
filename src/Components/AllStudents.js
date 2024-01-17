@@ -15,9 +15,10 @@ export default function AllStudents() {
   const [searchText, setSearchText] = useState("");
   const [status, setStatus] = useState(false);
   const [imgEncode, setImdEncode] = useState([]);
-  const [openEdit, setOpenEdit] = useState(false);
   const [name, setName] = useState("");
   const [openRegister, setOpenRegister] = useState(false);
+  const [editStudent, setEditStudent] = useState(false);
+  const [modalData, setModalData] = useState("");
   const webcamRef = useRef(null);
 
   useEffect(() => {
@@ -26,7 +27,6 @@ export default function AllStudents() {
       if (searchText === "") {
         setSearchStudents(students);
       }
-      setStatus(false);
     } catch (err) {
       console.log(err);
     }
@@ -35,18 +35,6 @@ export default function AllStudents() {
   useEffect(() => {
     setStatus(false);
   }, [status]);
-
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
 
   const handleSearch = () => {
     try {
@@ -58,29 +46,18 @@ export default function AllStudents() {
           displayStudents.push(students[i]);
         }
       }
-      console.log(displayStudents);
       setSearchStudents(displayStudents);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleEditModal = () => {
-    try {
-      if (openEdit) {
-        setOpenEdit(false);
-      } else {
-        setOpenEdit(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleRegisterModal = () => {
+  const handleRegisterModal = (types) => {
     try {
       if (openRegister) {
         setOpenRegister(false);
+        setImdEncode([]);
+        setName("");
       } else {
         setOpenRegister(true);
       }
@@ -93,9 +70,10 @@ export default function AllStudents() {
     try {
       let imgUrl = webcamRef.current.getScreenshot({});
       let demArr = imgEncode;
+      if (demArr.length === 3) {
+        demArr.shift();
+      }
       demArr.push(imgUrl);
-      console.log(demArr);
-      //   demArr.push(imgUrl);
       setImdEncode(demArr);
       setStatus(true);
     } catch (err) {
@@ -103,43 +81,62 @@ export default function AllStudents() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (types) => {
     try {
-      console.log(imgEncode);
-      console.log(name);
+      if (editStudent) {
+        let defaultStudents = students;
+        let filteredStudents = searchStudents;
 
-      let today = new Date();
-      let yr = today.getFullYear();
-      let mm = today.getMonth() + 1;
-      let dd = today.getDate();
+        for (let i = 0; i < defaultStudents.length; i++) {
+          if (defaultStudents[i].id === modalData.id) {
+            defaultStudents[i].name = name;
+            break;
+          }
+        }
 
-      let todayStr =
-        yr + "-" + ("0" + mm).slice(-2) + "-" + ("0" + dd).slice(-2);
+        for (let i = 0; i < filteredStudents.length; i++) {
+          if (filteredStudents[i].id === modalData.id) {
+            filteredStudents[i].name = name;
+            break;
+          }
+        }
 
-      const uniqueId = () => {
+        setStudents(defaultStudents);
+        setSearchStudents(filteredStudents);
+        // setStatus(true);
+        handleRegisterModal();
+      } else {
+        let today = new Date();
+        let yr = today.getFullYear();
+        let mm = today.getMonth() + 1;
+        let dd = today.getDate();
+
+        let todayStr =
+          yr + "-" + ("0" + mm).slice(-2) + "-" + ("0" + dd).slice(-2);
+
         const dateString = Date.now().toString(36);
         const randomness = Math.random().toString(36).substr(2);
-        return dateString + randomness;
-      };
+        const uniqueId = dateString + randomness;
 
-      let newObj = {
-        id: uniqueId,
-        name: name,
-        gender: "Male",
-        images: imgEncode,
-        accountCreatedOn: todayStr,
-        attendance: [],
-      };
-      let arr = students;
-      arr.push(newObj);
-      setStudents(arr);
-      handleRegisterModal();
+        let newObj = {
+          id: uniqueId,
+          name: name,
+          gender: "Male",
+          images: imgEncode,
+          accountCreatedOn: todayStr,
+          attendance: [],
+        };
+        let arr = students;
+
+        arr.push(newObj);
+        setStudents(arr);
+        handleRegisterModal();
+      }
+      setEditStudent(false);
     } catch (err) {
       console.log(err);
     }
   };
-
-  const [modalData, setModalData] = useState("");
 
   return (
     <>
@@ -182,25 +179,10 @@ export default function AllStudents() {
         </div>
       </p>
       <p className="studentsTable">
-        {/* <div className="studentContainer">
-          <div className="avatarDiv">
-            <Avatar />
-          </div>
-          <div className="avatarName">Ganesh</div>
-          <div className="avatarID">e407098</div>
-          <div className="avatarAttendance">Attendance: 75%</div>
-          <div className="avatarEdit">
-            <EditIcon />
-          </div>
-        </div> */}
         <Grid container spacing={2}>
           {searchStudents.map((data, index) => {
             return (
-              <Grid
-                item
-                md={3}
-                // className="studentContainer"
-              >
+              <Grid item md={3}>
                 <Box
                   sx={{
                     display: "flex",
@@ -220,7 +202,10 @@ export default function AllStudents() {
                       id="editIcon"
                       onClick={() => {
                         setModalData(data);
-                        handleEditModal();
+                        setImdEncode(data.images);
+                        setName(data.name);
+                        setEditStudent(true);
+                        handleRegisterModal();
                       }}
                     />
                   </div>
@@ -230,59 +215,6 @@ export default function AllStudents() {
           })}
         </Grid>
       </p>
-      <Modal
-        open={openEdit}
-        onClose={() => {
-          handleEditModal();
-        }}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div>Edit {modalData.id}</div>
-          <div style={{ marginTop: "10px" }}>
-            <TextField
-              id="outlined-basic"
-              label="Name"
-              variant="outlined"
-              value={modalData.name}
-              onChange={(e) => {
-                setModalData({
-                  ...modalData,
-                  name: e.target.value,
-                });
-              }}
-            />
-          </div>
-          <div style={{ marginTop: "10px" }}>
-            <Button
-              variant="contained"
-              onClick={(e) => {
-                console.log(modalData);
-                let defaultStudents = students;
-                let filteredStudents = searchStudents;
-                for (let i = 0; i < defaultStudents.length; i++) {
-                  if (defaultStudents[i].id === modalData.id) {
-                    defaultStudents[i].name = modalData.name;
-                    break;
-                  }
-                }
-                for (let i = 0; i < filteredStudents; i++) {
-                  if (filteredStudents[i].id === modalData.id) {
-                    filteredStudents[i].name = modalData.name;
-                    break;
-                  }
-                }
-                setStudents(defaultStudents);
-                setSearchStudents(filteredStudents);
-                setStatus(true);
-              }}
-            >
-              Submit
-            </Button>
-          </div>
-        </Box>
-      </Modal>
 
       <Modal
         open={openRegister}
@@ -326,17 +258,18 @@ export default function AllStudents() {
               <div className="displayImages">
                 {imgEncode.length
                   ? imgEncode.map((link) => {
-                      return link ? (
-                        <img src={link} alt="nope" />
-                      ) : (
-                        <img
-                          src={imageNotDefined}
-                          className="noImg"
-                          alt="imagenotavailable"
-                        />
-                      );
+                      return link ? <img src={link} alt="nope" /> : "";
                     })
                   : ""}
+                {!imgEncode.length ? (
+                  <img
+                    src={imageNotDefined}
+                    className="noImg"
+                    alt="imagenotavailable"
+                  />
+                ) : (
+                  ""
+                )}
               </div>
             </div>
             <div className="nameTextBox">
