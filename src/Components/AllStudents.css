@@ -29,3 +29,123 @@
 #editIcon {
   cursor: pointer;
 }
+
+.createAccount {
+  font-family: "Open Sans", sans-serif;
+  text-decoration: underline;
+}
+.forWebcam {
+  text-align: center;
+}
+#materialBox {
+  position: absolute;
+  /* width: 80%; */
+  top: 50%;
+  left: 50%;
+  background-color: white;
+  transform: translate(-50%, -50%);
+  border: 2px solid black;
+  border-radius: 5px;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+#photoWeb {
+  border: solid 2px gray;
+  border-radius: 6px;
+  width: 433px !important;
+  height: 326px;
+}
+.takePic {
+  background: #ffd814;
+  border-color: #fcd200;
+  color: black;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  padding: 3px;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+}
+.displayImages {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  height: 170px;
+  width: 640px;
+}
+.displayImages .separateImages > img,
+.displayImages > img {
+  border: solid 1px black;
+  border-radius: 5px;
+  width: 200px !important;
+  height: 150px !important;
+}
+
+.topHead {
+  padding-top: 2%;
+  padding-bottom: 2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.closeReg {
+  font-size: 20px;
+  font-weight: bold;
+  border: solid 2px darkred;
+  background-color: red;
+  padding-bottom: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+.nameInput {
+  border: 2px solid #a6a6a6;
+  border-top-color: #949494;
+  border-radius: 7px;
+  outline: 0;
+  padding: 3px;
+  font-size: 17px;
+  font-family: "Amazon Ember", Arial, sans-serif;
+}
+.nameTextBox {
+  text-align: center;
+  padding-top: 8px;
+}
+.submitRegisterInput {
+  outline: none;
+  border: none;
+  background-color: lightblue;
+  padding: 15px;
+  border-radius: 25px;
+  width: 25%;
+  font-size: 15px;
+  font-weight: bolder;
+  color: white;
+}
+.submitRegisterInput:hover {
+  background-color: blue;
+  box-shadow: -25px -9px 71px -35px rgba(0, 0, 0, 0.42);
+  cursor: pointer;
+}
+.submitRegister {
+  text-align: center;
+  padding-top: 25px;
+  padding-bottom: 10px;
+}
+.cancelImg {
+  position: absolute;
+  top: 65%;
+}
+.separateImages {
+  background-position: center;
+  height: 200px !important;
+  width: 170px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

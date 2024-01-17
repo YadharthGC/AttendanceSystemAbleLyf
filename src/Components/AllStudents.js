@@ -1,19 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import "./AllStudents.css";
-import { Avatar, Box, Grid, Modal, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Grid, Modal, TextField } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
 import { sampleJson } from "../sampleJson";
 import AddSharpIcon from "@mui/icons-material/AddSharp";
+import Webcam from "react-webcam";
+import imageNotDefined from "../images/imgNot.jpg";
 
 export default function AllStudents() {
   const [students, setStudents] = useState(sampleJson);
   const [searchStudents, setSearchStudents] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [status, setStatus] = useState(false);
+  const [imgEncode, setImdEncode] = useState([]);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [name, setName] = useState("");
+  const [openRegister, setOpenRegister] = useState(false);
+  const webcamRef = useRef(null);
+
   useEffect(() => {
     try {
+      setImdEncode([]);
       if (searchText === "") {
         setSearchStudents(students);
       }
@@ -22,6 +31,22 @@ export default function AllStudents() {
       console.log(err);
     }
   }, [searchText]);
+
+  useEffect(() => {
+    setStatus(false);
+  }, [status]);
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
 
   const handleSearch = () => {
     try {
@@ -40,29 +65,81 @@ export default function AllStudents() {
     }
   };
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [modalData, setModalData] = useState("");
-
-  const handleAddStudent = () => {
+  const handleEditModal = () => {
     try {
+      if (openEdit) {
+        setOpenEdit(false);
+      } else {
+        setOpenEdit(true);
+      }
     } catch (err) {
       console.log(err);
     }
   };
+
+  const handleRegisterModal = () => {
+    try {
+      if (openRegister) {
+        setOpenRegister(false);
+      } else {
+        setOpenRegister(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleScreenShot = () => {
+    try {
+      let imgUrl = webcamRef.current.getScreenshot({});
+      let demArr = imgEncode;
+      demArr.push(imgUrl);
+      console.log(demArr);
+      //   demArr.push(imgUrl);
+      setImdEncode(demArr);
+      setStatus(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleSubmit = () => {
+    try {
+      console.log(imgEncode);
+      console.log(name);
+
+      let today = new Date();
+      let yr = today.getFullYear();
+      let mm = today.getMonth() + 1;
+      let dd = today.getDate();
+
+      let todayStr =
+        yr + "-" + ("0" + mm).slice(-2) + "-" + ("0" + dd).slice(-2);
+
+      const uniqueId = () => {
+        const dateString = Date.now().toString(36);
+        const randomness = Math.random().toString(36).substr(2);
+        return dateString + randomness;
+      };
+
+      let newObj = {
+        id: uniqueId,
+        name: name,
+        gender: "Male",
+        images: imgEncode,
+        accountCreatedOn: todayStr,
+        attendance: [],
+      };
+      let arr = students;
+      arr.push(newObj);
+      setStudents(arr);
+      handleRegisterModal();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const [modalData, setModalData] = useState("");
 
   return (
     <>
@@ -97,7 +174,7 @@ export default function AllStudents() {
             sx={{ backgroundColor: "yellow" }}
             variant="contained"
             onClick={(e) => {
-              // handleSearch();
+              handleRegisterModal();
             }}
           >
             <AddSharpIcon />
@@ -143,7 +220,7 @@ export default function AllStudents() {
                       id="editIcon"
                       onClick={() => {
                         setModalData(data);
-                        handleOpen(data);
+                        handleEditModal();
                       }}
                     />
                   </div>
@@ -154,8 +231,10 @@ export default function AllStudents() {
         </Grid>
       </p>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={openEdit}
+        onClose={() => {
+          handleEditModal();
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -201,6 +280,85 @@ export default function AllStudents() {
             >
               Submit
             </Button>
+          </div>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openRegister}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box id="materialBox">
+          <div>
+            <div className="topHead">
+              <div className="createAccount">Create Account</div>
+              <div
+                className="closeReg"
+                onClick={() => {
+                  handleRegisterModal();
+                }}
+              >
+                x
+              </div>
+            </div>
+            <hr />
+            <div className="imgSec">
+              <div className="forWebcam">
+                <div>
+                  <Webcam
+                    id="photoWeb"
+                    width={400}
+                    audio={false}
+                    height={200}
+                    screenshotFormat="image/jpeg"
+                    ref={webcamRef}
+                  />
+                </div>
+                <div
+                  onClick={() => {
+                    handleScreenShot();
+                  }}
+                >
+                  <span className="takePic">Take Picture</span>
+                </div>
+              </div>
+              <div className="displayImages">
+                {imgEncode.length
+                  ? imgEncode.map((link) => {
+                      return link ? (
+                        <img src={link} alt="nope" />
+                      ) : (
+                        <img
+                          src={imageNotDefined}
+                          className="noImg"
+                          alt="imagenotavailable"
+                        />
+                      );
+                    })
+                  : ""}
+              </div>
+            </div>
+            <div className="nameTextBox">
+              <input
+                value={name}
+                type="text"
+                placeholder="full Name"
+                className="nameInput"
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+            </div>
+            <div className="submitRegister">
+              <input
+                type="submit"
+                className="submitRegisterInput"
+                onClick={() => {
+                  handleSubmit();
+                }}
+              />
+            </div>
           </div>
         </Box>
       </Modal>

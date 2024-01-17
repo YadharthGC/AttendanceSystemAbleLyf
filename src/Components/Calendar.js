@@ -9,19 +9,24 @@ import { Avatar, TextField } from "@mui/material";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { sampleJson } from "../sampleJson";
 import { Height } from "@mui/icons-material";
+import DoneTwoToneIcon from "@mui/icons-material/DoneTwoTone";
+import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone";
 
 export default function MyCalendar() {
   const [students, setStudents] = useState(sampleJson);
   const [presentStudents, setPresentStudents] = useState([]);
   const [absentStudents, setAbsentStudents] = useState([]);
+  const [wantedDate, setWantedDate] = useState("");
+  const [status, setStatus] = useState("false");
 
   useEffect(() => {
     try {
       handlePresentStudents();
+      setStatus(false);
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [status]);
 
   const handlePresentStudents = (dateStr) => {
     try {
@@ -29,6 +34,7 @@ export default function MyCalendar() {
         yr,
         mm,
         dd,
+        todayStr,
         studentsPresent = [],
         studentsAbsent = [];
 
@@ -39,14 +45,15 @@ export default function MyCalendar() {
         dd = today.getDate();
       }
 
-      let todayStr = dateStr
+      todayStr = dateStr
         ? dateStr
         : yr + "-" + ("0" + mm).slice(-2) + "-" + ("0" + dd).slice(-2);
+      setWantedDate(todayStr);
+
       console.log(dateStr, students);
 
       for (let i = 0; i < students.length; i++) {
         for (let j = 0; j < students[i].attendance.length; j++) {
-          console.log(students[i].attendance[j].date, dateStr);
           if (students[i].attendance[j].date === todayStr) {
             students[i].attendance[j].status === "present" &&
               studentsPresent.push(students[i]);
@@ -59,6 +66,38 @@ export default function MyCalendar() {
 
       setPresentStudents(studentsPresent);
       setAbsentStudents(studentsAbsent);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handlePresentAbsent = (data, types) => {
+    try {
+      console.log(data);
+      let studentsArr = students;
+      for (let i = 0; i < studentsArr.length; i++) {
+        if (data.id === studentsArr[i].id) {
+          let attendance = studentsArr[i].attendance;
+          for (let j = 0; j < attendance.length; j++) {
+            if (wantedDate === attendance[j].date) {
+              attendance[j].status = types === "present" ? "absent" : "present";
+            }
+          }
+        }
+      }
+      setStudents(studentsArr);
+      handlePresentStudents(wantedDate);
+      // setStatus(true);
+      // for (let i = 0; i < students.length; i++) {
+      //   if (data.id === students[i].id) {
+      //     let attendance = students[i].attendance;
+      //     for (let j = 0; j < attendance.length; j++) {
+      //       if (wantedDate === attendance[j].date) {
+      //         attendance[j].status = "absent";
+      //       }
+      //     }
+      //   }
+      // }
     } catch (err) {
       console.log(err);
     }
@@ -103,6 +142,14 @@ export default function MyCalendar() {
                             <Avatar />
                           </div>
                           <div className="avatarName">{data.name}</div>
+                          <div>
+                            <CloseTwoToneIcon
+                              id="closeIcon"
+                              onClick={() => {
+                                handlePresentAbsent(data, "present");
+                              }}
+                            />
+                          </div>
                         </Box>
                       </Grid>
                     );
@@ -125,6 +172,14 @@ export default function MyCalendar() {
                             <Avatar />
                           </div>
                           <div className="avatarName">{data.name}</div>
+                          <div>
+                            <DoneTwoToneIcon
+                              id="tickIcon"
+                              onClick={() => {
+                                handlePresentAbsent(data, "absent");
+                              }}
+                            />
+                          </div>
                         </Box>
                       </Grid>
                     );
